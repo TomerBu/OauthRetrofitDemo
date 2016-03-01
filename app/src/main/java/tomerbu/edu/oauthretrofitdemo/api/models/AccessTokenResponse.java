@@ -1,11 +1,11 @@
-package tomerbu.edu.oauthretrofitdemo;
+package tomerbu.edu.oauthretrofitdemo.api.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AccessToken {
+public class AccessTokenResponse {
 
-    public AccessToken(String accessToken, String tokenType, long expiresIn, String idToken, String refreshToken) {
+    public AccessTokenResponse(String accessToken, String tokenType, long expiresIn, String idToken, String refreshToken) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
@@ -35,7 +35,7 @@ public class AccessToken {
 
     @Override
     public String toString() {
-        return "AccessToken{" +
+        return "AccessTokenResponse{" +
                 "accessToken='" + accessToken + '\'' +
                 ", tokenType='" + tokenType + '\'' +
                 ", expiresIn=" + expiresIn +

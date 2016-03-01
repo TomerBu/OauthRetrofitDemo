@@ -1,4 +1,4 @@
-package tomerbu.edu.oauthretrofitdemo;
+package tomerbu.edu.oauthretrofitdemo.api.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -131,4 +131,16 @@ public class GoogleProfileResponse {
         this.picture = picture;
     }
 
+    @Override
+    public String toString() {
+        return "GoogleProfileResponse{" +
+                "familyName='" + familyName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", id='" + id + '\'' +
+                ", link='" + link + '\'' +
+                ", name='" + name + '\'' +
+                ", picture='" + picture + '\'' +
+                '}';
+    }
 }
