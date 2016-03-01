@@ -22,6 +22,7 @@ import tomerbu.edu.oauthretrofitdemo.api.models.AccessTokenResponse;
 public class MainActivity extends AppCompatActivity implements GoogleProfileAPI.OnAPIReady {
 
 
+    private static final String SHARED_PREFS = "Oauth";
     // you should either define client id and secret as constants or in string resources
     private final String clientId = "387414573620-a5dbc02u4af3be0mrv5ll5ki94iaq317.apps.googleusercontent.com";
     private final String clientSecret = "l3FHjuvppIAsdNN6FCZ-0fiw";
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements GoogleProfileAPI.
     FloatingActionButton profile;
 
     private GoogleProfileAPI api;
+    private String SP_KEY_TOKEN = "token";
 
 
     @Override
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleProfileAPI.
       prompt=consent&
       include_granted_scopes=true
     */
-        String token = getSharedPreferences("Oauth", MODE_PRIVATE).getString("token", null);
+        String token = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).getString(SP_KEY_TOKEN, null);
         if (token != null) {
             AccessTokenResponse accessTokenResponse = new Gson().fromJson(token, AccessTokenResponse.class);
             api = new GoogleProfileAPI(accessTokenResponse, this);
@@ -116,6 +118,6 @@ public class MainActivity extends AppCompatActivity implements GoogleProfileAPI.
         api.getProfile();
         Gson gson = new Gson();
         String jsonToken = gson.toJson(tokenResponse);
-        getSharedPreferences("Oauth", MODE_PRIVATE).edit().putString("token", jsonToken).commit();
+        getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit().putString(SP_KEY_TOKEN, jsonToken).commit();
     }
 }
