@@ -6,12 +6,13 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "https://accounts.google.com/o/oauth2";
+    public static final String API_BASE_URL = "https://accounts.google.com/o/oauth2/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -45,9 +46,9 @@ public class ServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
-    public static <S> S createService(Class<S> serviceClass, String clientId, String clientSecret) {
+    public static <S> S createService(Class<S> serviceClass) {
 
-        OkHttpClient client = httpClient.build();
+        OkHttpClient client = httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build();
         Retrofit retrofit = builder.client(client).build();
         return retrofit.create(serviceClass);
     }

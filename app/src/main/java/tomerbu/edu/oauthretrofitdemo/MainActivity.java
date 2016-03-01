@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -52,19 +53,41 @@ public class MainActivity extends AppCompatActivity {
                 // we'll do that in a minute
                 //4/yPe8MqLxmRhqmUe_-GwYv859mZ4D56PnIeKrW6h3Lls
                 // get access token
-                LoginService loginService =
-                        ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
-                Call<AccessToken> call = loginService.getAccessToken(code, "authorization_code");
-               ;
+                final LoginService loginService =
+                        ServiceGenerator.createService(LoginService.class);
+                //  TokenRequest tokenRequest = new TokenRequest(code, "authorization_code");
+                Call<AccessToken> call = loginService.getAccessToken(clientId, clientSecret, code, "authorization_code", redirectUri);
+
                 call.enqueue(new Callback<AccessToken>() {
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+                        if (response == null)
+                            return;
+
                         AccessToken accessToken = response.body();
+
+                        Log.d("TomerBu", accessToken.toString());
+
+
+                        Call<GoogleProfileResponse> userProfile = loginService.getUserProfile(accessToken.getAccessToken());
+                        userProfile.enqueue(new Callback<GoogleProfileResponse>() {
+                            @Override
+                            public void onResponse(Call<GoogleProfileResponse> call, Response<GoogleProfileResponse> response) {
+                                GoogleProfileResponse profile = response.body();
+                                Log.d("TomerBu", profile.toString());
+                            }
+
+                            @Override
+                            public void onFailure(Call<GoogleProfileResponse> call, Throwable t) {
+
+                            }
+                        });
                     }
+
 
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
-
+                        t.printStackTrace();
                     }
                 });
 
@@ -111,10 +134,11 @@ public class MainActivity extends AppCompatActivity {
   prompt=consent&
   include_granted_scopes=true
         * */
-
+        Uri uri = Uri.parse(ServiceGenerator.API_BASE_URL + "auth" + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&scope=" + scope + "&response_type=code");
+        Log.d("TomerBu", uri.toString());
         Intent intent = new Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(ServiceGenerator.API_BASE_URL + "/auth" + "?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&scope=" + scope + "&response_type=code"));
+                uri);
         startActivity(intent);
     }
 }
