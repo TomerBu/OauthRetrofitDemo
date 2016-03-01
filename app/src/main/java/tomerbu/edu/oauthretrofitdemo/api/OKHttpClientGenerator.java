@@ -70,7 +70,7 @@ public class OKHttpClientGenerator {
                 //Make a blocking call to get a token, this is done on a background thread already.
 
 
-                retrofit2.Response<AccessTokenResponse> accessTokenResponse = accessTokenCall.execute();
+                retrofit2.Response<AccessTokenResponse> accessTokenResponse = accessTokenCall.clone().execute();
                 this.token = accessTokenResponse.body();
 
 

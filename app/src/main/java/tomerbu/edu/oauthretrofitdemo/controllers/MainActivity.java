@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements GoogleProfileAPI.
     @Override
     public void onApiReady(AccessTokenResponse tokenResponse) {
         api.getProfile();
+        //TODO: Test that the new token is always the one saved in all scenarios. (Authenticator ETC).
         Gson gson = new Gson();
         String jsonToken = gson.toJson(tokenResponse);
         getSharedPreferences(SHARED_PREFS, MODE_PRIVATE).edit().putString(SP_KEY_TOKEN, jsonToken).commit();
